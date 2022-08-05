@@ -1,6 +1,4 @@
 # Terraform
-# Terraform
-
 
 % brew install terraform
 % terraform -v
@@ -12,4 +10,3 @@
 % terraform destroy
 % terraform state list
 % terraform show# Terraform
-# Terraform
