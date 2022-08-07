@@ -1,3 +1,3 @@
-output "instance_public_ip" {
+output "aws" {
   value = aws_instance.dev_instance.public_ip
 }
