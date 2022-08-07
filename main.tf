@@ -73,8 +73,18 @@ resource "aws_instance" "dev_instance" {
   key_name               = aws_key_pair.dev_key-pair.id
   vpc_security_group_ids = [aws_security_group.dev_security-group.id]
   subnet_id              = aws_subnet.dev_subnet.id
-  user_data              = file("userdata.tpl")
+  user_data              = file("templates/userdata.tpl")
   tags = {
     "name" = "dev_instance"
+  }
+  provisioner "local-exec" {
+    command = templatefile("${var.command}", {
+      hostname = self.public_ip,
+      user     = "ubuntu",
+    identityfile = "~/.ssh/id_ed25519" })
+  }
+  provisioner "local-exec" {
+    command = "rm -f ~/.ssh/config"
+    when    = destroy
   }
 }

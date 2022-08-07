@@ -1,6 +1,8 @@
 # Terraform
+https://youtu.be/iRaai1IBlB0
 
 brew install terraform
+
 terraform -v
 terraform init
 terraform plan
@@ -13,6 +15,9 @@ terraform state list
 terraform state show aws_instance.dev_instance
 terraform show# Terraform
 terraform fmt
+terraform apply -replace aws_instance.dev_instance
+terraform apply -replace aws_instance.dev_instance -auto-approve
+terraform apply -refresh-only
 
 % ssh-keygen -t ed25519
 % ssh -i ~/.ssh/id_ed25519 ubuntu@ec2-34-221-102-238.us-west-2.compute.amazonaws.com 
