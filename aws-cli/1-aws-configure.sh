@@ -16,7 +16,7 @@ column_number=2
 # Reade the cell value
 aws_secret_access_key=$(awk -F',' -v row="$row_number" -v col="$column_number" 'NR==row {print $col}' "$csv_file")
 
-default_region='us-east-1'
+# default_region='us-east-1'
 default_region='us-west-1'
 output_format='json'
 

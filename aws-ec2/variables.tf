@@ -17,7 +17,7 @@ variable "aws_ec2_aws_key_pair" {
 
 variable "aws_ec2_availability_zone" {
   type    = string
-  default = "us-west-1a"
+  default = "us-west-1c"
 }
 
 variable "aws_ec2_instance_type" {
