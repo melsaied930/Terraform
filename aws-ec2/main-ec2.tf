@@ -11,7 +11,7 @@ resource "aws_subnet" "dev_subnet" {
   vpc_id                  = aws_vpc.dev_vpc.id
   cidr_block              = "10.123.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = var.aws_ec2_availability_zone
+  # availability_zone       = var.aws_ec2_availability_zone
   tags = {
     "Name" = "dev_subnet"
   }
@@ -100,3 +100,11 @@ resource "aws_instance" "dev_instance" {
   #   when    = destroy
   # }
 }
+
+# resource "aws_eip" "dev_aws_eip" {
+#   instance = aws_instance.dev_instance.id
+#   vpc      = true
+#   tags = {
+#     Name = "dev_aws_eip"
+#   }
+# }
