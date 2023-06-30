@@ -1,10 +1,16 @@
+locals {
+  # Common tags to be assigned to all resources
+  common_tags = {
+    Name = "dev"
+  }
+}
+
+
 resource "aws_vpc" "dev_vpc" {
   cidr_block           = "10.123.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
-  tags = {
-    "Name" = "dev_vpc"
-  }
+  tags                 = local.common_tags
 }
 
 resource "aws_subnet" "dev_subnet" {
@@ -12,23 +18,17 @@ resource "aws_subnet" "dev_subnet" {
   cidr_block              = "10.123.1.0/24"
   map_public_ip_on_launch = true
   # availability_zone       = var.aws_ec2_availability_zone
-  tags = {
-    "Name" = "dev_subnet"
-  }
+  tags = local.common_tags
 }
 
 resource "aws_internet_gateway" "dev_internet_gateway" {
   vpc_id = aws_vpc.dev_vpc.id
-  tags = {
-    "Name" = "dev_internet_gateway"
-  }
+  tags   = local.common_tags
 }
 
 resource "aws_route_table" "dev_route_table" {
   vpc_id = aws_vpc.dev_vpc.id
-  tags = {
-    "Name" = "dev_route_table"
-  }
+  tags   = local.common_tags
 }
 
 resource "aws_route" "dev_route" {
@@ -60,17 +60,13 @@ resource "aws_security_group" "dev_security_group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    "Name" = "dev_security_group"
-  }
+  tags = local.common_tags
 }
 
 resource "aws_key_pair" "dev_key_pair" {
   key_name   = "key_pair"
   public_key = file(var.aws_ec2_aws_key_pair)
-  tags = {
-    "Name" = "dev_key_pair"
-  }
+  tags       = local.common_tags
 }
 
 resource "aws_instance" "dev_instance" {
@@ -83,9 +79,7 @@ resource "aws_instance" "dev_instance" {
   root_block_device {
     volume_size = 10
   }
-  tags = {
-    "Name" = "dev_instance"
-  }
+  tags = local.common_tags
   provisioner "local-exec" {
     command = templatefile("../ssh-config/ssh_linux_config.tpl", {
       hostname     = self.public_ip,

@@ -1,11 +1,11 @@
 variable "command_template_file" {
-  type    = string
-  default = "../ssh-config/ssh_linux_config.tpl"
-  # default = "templates/ssh_win_config.tpl"
+  type = string
+  # default = "../ssh-config/ssh_linux_config.tpl"
+  default = "templates/ssh_win_config.tpl"
 }
 
 variable "aws_ec2_user_data" {
-  type    = string
+  type = string
   # default = "../templates/update_docker.tpl"
   default = "../templates/update_jdk.tpl"
 }

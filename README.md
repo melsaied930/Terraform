@@ -5,6 +5,7 @@ brew install terraform
 
 terraform -v
 terraform init
+terraform validate
 terraform plan
 terraform apply
 terraform apply -help
@@ -22,6 +23,8 @@ terraform state list
 terraform state show aws_instance.dev_instance
 terraform show# Terraform
 terraform fmt
+
+terraform plan -var-file=dev.tfvars
 
 ssh-keygen -t ed25519
 
