@@ -5,7 +5,6 @@ locals {
   }
 }
 
-
 resource "aws_vpc" "dev_vpc" {
   cidr_block           = "10.123.0.0/16"
   enable_dns_hostnames = true
@@ -17,8 +16,8 @@ resource "aws_subnet" "dev_subnet" {
   vpc_id                  = aws_vpc.dev_vpc.id
   cidr_block              = "10.123.1.0/24"
   map_public_ip_on_launch = true
-  # availability_zone       = var.aws_ec2_availability_zone
-  tags = local.common_tags
+  availability_zone       = var.aws_ec2_availability_zone
+  tags                    = local.common_tags
 }
 
 resource "aws_internet_gateway" "dev_internet_gateway" {
@@ -72,6 +71,7 @@ resource "aws_key_pair" "dev_key_pair" {
 resource "aws_instance" "dev_instance" {
   instance_type          = var.aws_ec2_instance_type
   ami                    = data.aws_ami.dev_ami.id
+  availability_zone      = aws_subnet.dev_subnet.availability_zone
   key_name               = aws_key_pair.dev_key_pair.id
   vpc_security_group_ids = [aws_security_group.dev_security_group.id]
   subnet_id              = aws_subnet.dev_subnet.id
@@ -89,16 +89,8 @@ resource "aws_instance" "dev_instance" {
     )
     interpreter = ["bash", "-c"]
   }
-  # provisioner "local-exec" {
-  #   command = "rm -f ~/.ssh/config"
-  #   when    = destroy
-  # }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "sed '/^Host ${self.public_ip}$/,/^$/d' ~/.ssh/config > ~/.ssh/config.tmp && mv ~/.ssh/config.tmp ~/.ssh/config"
+  }
 }
-
-# resource "aws_eip" "dev_aws_eip" {
-#   instance = aws_instance.dev_instance.id
-#   vpc      = true
-#   tags = {
-#     Name = "dev_aws_eip"
-#   }
-# }

@@ -1,7 +1,14 @@
 #!/bin/bash
-sudo apt-get update -y
-sudo apt-get install openjdk-8-jdk maven -y
-
+echo '***** ***** update ***** *****' >>user-logs\.log
+sudo apt-get update -y >>user-logs\.log 2>&1
+echo '***** ***** update completed ***** *****' >>user-logs\.log
+# sudo apt-get install openjdk-8-jdk maven -y
+echo '***** ***** install maven ***** *****' >>user-logs\.log
+sudo apt-get install maven -y >>user-logs\.log 2>&1
+echo '***** ***** install maven completed ***** *****' >>user-logs\.log
+echo '***** ***** clone ***** *****' >>user-logs\.log
+git clone https://github.com/melsaied930/demo.git >>user-logs\.log 2>&1
+echo '***** ***** clone completed ***** *****' >>user-logs\.log
 
 # cat <<EOF >/home/ubuntu/user-data.sh
 # #!/bin/bash
@@ -28,9 +35,6 @@ sudo apt-get install openjdk-8-jdk maven -y
 # chmod +x user-data.sh
 # /bin/su -c "./user-data.sh" - ubuntu | tee user-data\.log
 
-
-
-
 # #!/bin/bash
 # cat <<EOF >/home/ubuntu/user-data.sh
 # #!/bin/bash
@@ -50,4 +54,3 @@ sudo apt-get install openjdk-8-jdk maven -y
 # cd /home/ubuntu
 # chmod +x user-data.sh
 # /bin/su -c "./user-data.sh" - ubuntu | tee user-data\.log
-
