@@ -1,10 +1,10 @@
-variable "command_template_file" {
+variable "command_file" {
   type = string
   # default = "../ssh-config/ssh_linux_config.tpl"
   default = "templates/ssh_win_config.tpl"
 }
 
-variable "aws_ec2_user_data" {
+variable "user_data" {
   type = string
   # default = "../templates/update_docker.tpl"
   default = "../templates/update_jdk.tpl"
@@ -23,4 +23,9 @@ variable "aws_ec2_availability_zone" {
 variable "aws_ec2_instance_type" {
   type    = string
   default = "t2.micro"
+}
+
+variable "aws_instance_count" {
+  type    = string
+  default = "1"
 }

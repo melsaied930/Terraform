@@ -8,6 +8,6 @@ terraform {
 
 provider "aws" {
   profile                  = "default"
-  region                   = "us-west-2"
+  region                   = var.aws_ec2_availability_zone
   shared_credentials_files = ["~/.aws/credentials"]
-   }
+}
