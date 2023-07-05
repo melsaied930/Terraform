@@ -1,0 +1,72 @@
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+aws ec2 create-default-vpc
+
+aws ec2 create-key-pair --query 'KeyMaterial' --output text > key-pairs-1.pem --key-name 'key-pairs-1'
+
+aws ec2 create-security-group --group-name security-group-1 --description "security-group-1" --vpc-id $( aws ec2 describe-vpcs --output text --query "Vpcs[].VpcId[]" )
+
+aws ec2 authorize-security-group-ingress --output text --group-id $( aws ec2 describe-security-groups --output text --filters Name=group-name,Values=security-group-1 --query "SecurityGroups[*].{ID:GroupId}") --protocol all --port all --cidr 0.0.0.0/0
+
+aws ec2 create-default-subnet --availability-zone us-east-1a
+
+aws ec2 run-instances --count 1 --instance-type t2.micro --image-id ami-09e67e426f25ce0d7 --key-name $( aws ec2 describe-key-pairs --query "KeyPairs[].KeyName[]" --output text ) --subnet-id $( aws ec2 describe-subnets --filters "Name=availability-zone,Values=us-east-1a" --query 'Subnets[0].[SubnetId]' --output text ) --security-group-ids $( aws ec2 describe-security-groups --filters Name=group-name,Values=security-group-1 --query "SecurityGroups[*].{ID:GroupId}" --output text  )
+
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+
+chmod 400 key-pairs-1.pem
+
+Connect to your instance
+ssh -i "key-pairs-1.pem" ubuntu@$(aws ec2 describe-instances --filters Name=instance-type,Values=t2.micro Name=key-name,Values=key-pairs-1 Name=instance-state-name,Values=running --query Reservations[*].Instances[*].[PublicDnsName] --output text)
+
+Terminate instance
+aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --filters Name=instance-type,Values=t2.micro Name=key-name,Values=key-pairs-1 Name=instance-state-name,Values=running --query Reservations[*].Instances[*].[InstanceId] --output text)
+
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+
+
+aws ec2 describe-vpcs --output text --query "Vpcs[].VpcId[]"
+
+
+
+$(aws ec2 describe-security-groups --output text --filters Name=group-name,Values=security-group-1 --query "SecurityGroups[*].{ID:GroupId}")
+
+
+
+$(aws ec2 describe-subnets --output text --query 'Subnets[0].[SubnetId]' --filters "Name=availability-zone,Values=us-east-1a")
+
+
+
+aws ec2 run-instances \
+--image-id ami-09e67e426f25ce0d7 \
+--count 1 \
+--instance-type t2.micro \
+--key-name key-pairs-1 \
+--security-group-ids sg-0ae521341372f624a
+--subnet-id subnet-0c8ef253
+
+
+
+
+Aim id : ami-09e67e426f25ce0d7
+
+Sec grp : $(aws ec2 describe-security-groups --output text --filters Name=group-name,Values=security-group-1 --query "SecurityGroups[*].{ID:GroupId}")
+
+Subnet : $(aws ec2 describe-subnets --output text --query 'Subnets[0].[SubnetId]' --filters "Name=availability-zone,Values=us-east-1a")
+
+172.31.80.0/20
+172.31.32.0/20
+
+aws ec2 create-subnet --vpc-id $(aws ec2 describe-vpcs --output text --query "Vpcs[].VpcId[]") --cidr-block 172.31.80.0/20 --availability-zone-id use1-az6
+
+
+
+
+
+
+aws ec2 create-subnet --vpc-id $(aws ec2 describe-vpcs --output text --query "Vpcs[].VpcId[]")--cidr-block 172.31.80.0/20
+
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Instance:InstanceId,Subnet:SubnetId}' --output json
+
+aws ec2 describe-subnets --filters "Name=availability-zone,Values=us-east-1a"
