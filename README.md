@@ -26,15 +26,15 @@ terraform fmt
 
 terraform plan -var-file=dev.tfvars
 
+terraform get -update
+
+terraform workspace
+terraform workspace list
+
+
 ssh-keygen -t ed25519
 
 ssh -i ~/.ssh/id_ed25519 ubuntu@ec2-34-221-102-238.us-west-2.compute.amazonaws.com
-
-ami-0fcbcd64ee75d9d12
-Owner 099720109477
-
-aws ec2 create-key-pair --key-name MyKeyPair
-aws ec2 create-key-pair --key-name my-key-pair --key-type rsa --key-format pem --query "KeyMaterial" --output text > my-key-pair.pem
 
 https://github.com/MPriv32/GitOps-Spacelift-Terraform
 

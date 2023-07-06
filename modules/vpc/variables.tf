@@ -1,5 +1,5 @@
 variable "project_name" { default = "env" }
-variable "region" { default = "us-west-2" }
+variable "region" { default = "us-east-1" }
 variable "vpc_cidr_block" { default = "10.123.0.0/16" }
 variable "vpc_enable_dns_hostnames" { default = true }
 variable "vpc_enable_dns_support" { default = true }
